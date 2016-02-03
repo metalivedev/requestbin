@@ -6,7 +6,7 @@ ROOT_URL = "http://localhost:4000"
 
 PORT_NUMBER = 4000
 
-FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1BKhJLnBqLpexOZdklsfDKFJDKFadsfs9a3r324YB7B73AglRmrHMDQ9RhXz35")
+FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "Xr/1xfL/tpVE7jD11Mh1V8XWbg1a2tho742UwCFLHOE=")
 
 BIN_TTL = 48*3600
 STORAGE_BACKEND = "requestbin.storage.memory.MemoryStorage"

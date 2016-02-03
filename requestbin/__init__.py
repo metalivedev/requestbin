@@ -31,7 +31,7 @@ class WSGIRawBody(object):
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/oldforum/static/')
 
 from werkzeug.contrib.fixers import ProxyFix
 app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
