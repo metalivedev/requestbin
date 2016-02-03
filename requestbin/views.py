@@ -28,7 +28,7 @@ def expand_recent_bins():
 
 @app.endpoint('views.home')
 def home():
-    return render_template('home.html', recent=expand_recent_bins())
+    return render_template('home.html', recent=expand_recent_bins(), basedir=config.basedir)
 
 
 @app.endpoint('views.bin')
@@ -42,8 +42,10 @@ def bin(name):
             return "Private bin\n", 403
         update_recent_bins(name)
         return render_template('bin.html',
-            bin=bin,
-            host=request.host)
+                               bin=bin,
+                               host=request.host,
+                               basedir=config.basedir
+        )
     else:
         db.create_request(bin, request)
         resp = make_response("ok\n")
@@ -56,8 +58,10 @@ def docs(name):
     doc = db.lookup_doc(name)
     if doc:
         return render_template('doc.html',
-                content=doc['content'],
-                title=doc['title'],
-                recent=expand_recent_bins())
+                               content=doc['content'],
+                               title=doc['title'],
+                               recent=expand_recent_bins(),
+                               basedir=config.basedir
+        )
     else:
         return "Not found", 404

@@ -3,6 +3,7 @@ DEBUG = True
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
+basedir = '/oldforum/'
 
 PORT_NUMBER = 4000
 
