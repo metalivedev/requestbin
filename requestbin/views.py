@@ -28,7 +28,7 @@ def expand_recent_bins():
 
 @app.endpoint('views.home')
 def home():
-    return render_template('home.html', recent=expand_recent_bins(), basedir=config.BASEDIR)
+    return render_template('home.html', recent=expand_recent_bins(), basedir=app.config.BASEDIR)
 
 
 @app.endpoint('views.bin')
@@ -44,7 +44,7 @@ def bin(name):
         return render_template('bin.html',
                                bin=bin,
                                host=request.host,
-                               basedir=config.BASEDIR
+                               basedir=app.config.BASEDIR
         )
     else:
         db.create_request(bin, request)
@@ -61,7 +61,7 @@ def docs(name):
                                content=doc['content'],
                                title=doc['title'],
                                recent=expand_recent_bins(),
-                               basedir=config.BASEDIR
+                               basedir=app.config.BASEDIR
         )
     else:
         return "Not found", 404

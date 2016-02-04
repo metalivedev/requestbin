@@ -2,10 +2,10 @@
 {% block head %}
     <script type="text/javascript">
       function createBin() {
-        $.ajax({'url': '/api/v1/bins', 'type': 'POST', 
+        $.ajax({'url': app.config.BASEDIR+'api/v1/bins', 'type': 'POST', 
           'data': {'private': $('#private').prop("checked")},
           'success': function(data) {
-            window.location.href = "/"+data['name']+"?inspect";
+            window.location.href = app.config.BASEDIR+data['name']+"?inspect";
           }
         });
       }
