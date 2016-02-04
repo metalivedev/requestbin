@@ -3,7 +3,8 @@ DEBUG = True
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
-basedir = '/oldforum/'
+# Base directory of where this application is running
+BASEDIR = '/oldforum/'
 
 PORT_NUMBER = 4000
 
@@ -24,7 +25,7 @@ REDIS_DB = 9
 
 REDIS_PREFIX = "requestbin"
 
-BUGSNAG_KEY = ""
+LOGFILE = os.environ.get("LOGFILE", "app.log")
 
 if REALM == 'prod':
     DEBUG = False
@@ -41,7 +42,8 @@ if REALM == 'prod':
     REDIS_PASSWORD = url_parts.password
     REDIS_DB = url_parts.fragment
 
-    BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
+
+
 
     IGNORE_HEADERS = """
 X-Varnish

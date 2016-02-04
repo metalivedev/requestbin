@@ -31,7 +31,7 @@ class WSGIRawBody(object):
 
 
 
-app = Flask(__name__, static_url_path='/oldforum/static/')
+app = Flask(__name__)
 
 from werkzeug.contrib.fixers import ProxyFix
 app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
@@ -40,18 +40,15 @@ app.debug = config.DEBUG
 app.secret_key = config.FLASK_SESSION_SECRET_KEY
 app.root_path = os.path.abspath(os.path.dirname(__file__))
 
-if config.BUGSNAG_KEY:
-    import bugsnag
-    from bugsnag.flask import handle_exceptions
-    bugsnag.configure(
-        api_key=config.BUGSNAG_KEY,
-        project_root=app.root_path,
-        # 'production' is a magic string for bugsnag, rest are arbitrary
-        release_stage = config.REALM.replace("prod", "production"),
-        notify_release_stages=["production", "test"],
-        use_ssl = True
-    )
-    handle_exceptions(app)
+if not app.debug:
+    from logging import FileHandler, Formatter
+    file_handler = FileHandler(config.LOGFILE)
+    file_handler.setLevel(logging.WARNING)
+    file_handler.setFormatter(Formatter(
+            '%(asctime)s %(levelname)s: %(message)s '
+            '[in %(pathname)s:%(lineno)d]'
+    ))
+    app.logger.addHandler(file_handler)
 
 from filters import *
 app.jinja_env.filters['status_class'] = status_class
