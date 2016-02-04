@@ -39,7 +39,7 @@ app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
 app.debug = config.DEBUG
 app.secret_key = config.FLASK_SESSION_SECRET_KEY
 app.root_path = os.path.abspath(os.path.dirname(__file__))
-app.BASEDIR = config.BASEDIR
+app.config.BASEDIR = config.BASEDIR
 
 if not app.debug:
     from logging import FileHandler, Formatter
