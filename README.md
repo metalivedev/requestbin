@@ -47,4 +47,4 @@ Contributors
 ------------
  * Barry Carlyon <barry@barrycarlyon.co.uk>
  * Jeff Lindsay <progrium@gmail.com>
- * Andy Rothfusz <metalivedev@devsupport.net>
+ * Andy Rothfusz <github@devsupport.net>
