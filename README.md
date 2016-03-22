@@ -1,16 +1,24 @@
-# [RequestBin](http://requestb.in)
-## A Runscope community project.
+# Dockerized RequestBin
+_Forked from a Runscope community project, [requestbin](https://github.com/Runscope/requestbin)_
 
-Originally Created by [Jeff Lindsay](http://progrium.com)
+This fork is being customized to run in a Docker container and to run in a subdirectory rather than as root. I don't anticipate that these changes would be accepted by the main RequestBin project, so there will be no pull requests from this project unless asked. Feel free to fork this project and bring the changes you like back to RequestBin if you like.
 
-License
--------
+**TODO** I'm also going to add some "security" in the form of a required header and check for a required value for the header, and I will do some general cleanup to make this less project refer less to RequestBin (except to give credit for the code).
+
+# License
 MIT
 
+## Running Locally with Docker
+In the first version, you should run with only one worker and use the debug mode with in-memory bins.
 
-Looking to self-host?
-=====================
+**TODO** I will expand this to use a separate Redis container and so allow multiple workers.
 
+    # edit requestbin/config.py to set configuration, then ... 
+    docker build -t requestbin .
+    docker run --name rbin -d -e PORT=8080 -p 9999:8080
+    # Note rbin, 8080, and 9999 are just examples.
+
+## Running on Heroku
 ## Deploy your own instance using Heroku
 Create a Heroku account if you haven't, then grab the RequestBin source using git:
 
@@ -39,3 +47,4 @@ Contributors
 ------------
  * Barry Carlyon <barry@barrycarlyon.co.uk>
  * Jeff Lindsay <progrium@gmail.com>
+ * Andy Rothfusz <metalivedev@devsupport.net>
