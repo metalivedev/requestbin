@@ -2,7 +2,7 @@ import json
 import operator
 
 from flask import session, make_response, request, render_template
-from requestbin import app, db
+from requestbin import app, bp, db
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
@@ -16,8 +16,8 @@ def _response(object, code=200):
     return resp
 
 
-@app.endpoint('api.bins')
-def bins():
+@bp.route('/api/v1/bins', methods=['POST'])
+def apibins():
     private = request.form.get('private') == 'true'
     bin = db.create_bin(private)
     if bin.private:
@@ -25,8 +25,8 @@ def bins():
     return _response(bin.to_dict())
 
 
-@app.endpoint('api.bin')
-def bin(name):
+@bp.route('/api/v1/bins/<name>', methods=['GET'])
+def apibin(name):
     try:
         bin = db.lookup_bin(name)
     except KeyError:
@@ -35,7 +35,7 @@ def bin(name):
     return _response(bin.to_dict())
 
 
-@app.endpoint('api.requests')
+@bp.route('/api/v1/bins/<bin>/requests', methods=['GET'])
 def requests(bin):
     try:
         bin = db.lookup_bin(bin)
@@ -45,7 +45,7 @@ def requests(bin):
     return _response([r.to_dict() for r in bin.requests])
 
 
-@app.endpoint('api.request')
+@bp.route('/api/v1/bins/<bin>/requests/<name>', methods=['GET'])
 def request_(bin, name):
     try:
         bin = db.lookup_bin(bin)
@@ -59,7 +59,7 @@ def request_(bin, name):
     return _response({'error': "Request not found"}, 404)
 
 
-@app.endpoint('api.stats')
+@bp.route('/api/v1/stats')
 def stats():
     stats = {
         'bin_count': db.count_bins(),

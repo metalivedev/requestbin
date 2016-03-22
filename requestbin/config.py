@@ -2,9 +2,8 @@ import os, urlparse
 DEBUG = True
 REALM = os.environ.get('REALM', 'local')
 
-ROOT_URL = "http://localhost:4000"
-# Base directory of where this application is running
-BASEDIR = os.environ.get('BASEDIR', '/')
+APPLICATION_ROOT = os.environ.get('APPLICATION_ROOT', '/')
+PREFERRED_URL_SCHEME = os.environ.get('APPLICATION_SCHEME', 'http')
 
 PORT_NUMBER = 4000
 
@@ -29,7 +28,6 @@ LOGFILE = os.environ.get("LOGFILE", "app.log")
 
 if REALM == 'prod':
     DEBUG = False
-    ROOT_URL = "http://requestb.in"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
 

@@ -1,7 +1,7 @@
 import urllib
 from flask import session, redirect, url_for, escape, request, render_template, make_response
 
-from requestbin import app, db
+from requestbin import app, bp, db
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -26,12 +26,12 @@ def expand_recent_bins():
             session.modified = True
     return recent
 
-@app.endpoint('views.home')
+@bp.route('/')
 def home():
-    return render_template('home.html', recent=expand_recent_bins(), basedir=app.config.BASEDIR)
+    return render_template('home.html', recent=expand_recent_bins())
 
 
-@app.endpoint('views.bin')
+@bp.route('/<name>', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'])
 def bin(name):
     try:
         bin = db.lookup_bin(name)
@@ -41,10 +41,11 @@ def bin(name):
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
+        # Generate an externally valid URL
+        exturl = url_for('.bin', name=name, _external=True, _scheme=app.config.PREFERRED_URL_SCHEME)
         return render_template('bin.html',
                                bin=bin,
-                               host=request.host,
-                               basedir=app.config.BASEDIR
+                               exturl=exturl
         )
     else:
         db.create_request(bin, request)
@@ -52,15 +53,14 @@ def bin(name):
         return resp
 
 
-@app.endpoint('views.docs')
+@bp.route('/docs/<name>')
 def docs(name):
     doc = db.lookup_doc(name)
     if doc:
         return render_template('doc.html',
                                content=doc['content'],
                                title=doc['title'],
-                               recent=expand_recent_bins(),
-                               basedir=app.config.BASEDIR
+                               recent=expand_recent_bins()
         )
     else:
         return "Not found", 404

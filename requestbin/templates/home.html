@@ -2,10 +2,10 @@
 {% block head %}
     <script type="text/javascript">
       function createBin() {
-        $.ajax({'url': "{{ basedir }}" +'api/v1/bins', 'type': 'POST', 
+        $.ajax({'url': "{{ url_for('.apibins') }}", 'type': 'POST', 
           'data': {'private': $('#private').prop("checked")},
           'success': function(data) {
-            window.location.href = "{{ basedir }}" + data['name']+"?inspect";
+            window.location.href = "{{ url_for('.home') }}" + data['name']+"?inspect";
           }
         });
       }

@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Blueprint, Flask, redirect, url_for
 import config, os
 
 from cStringIO import StringIO
@@ -32,6 +32,7 @@ class WSGIRawBody(object):
 
 
 app = Flask(__name__)
+bp = Blueprint('subdir', __name__)
 
 from werkzeug.contrib.fixers import ProxyFix
 app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
@@ -39,17 +40,19 @@ app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
 app.debug = config.DEBUG
 app.secret_key = config.FLASK_SESSION_SECRET_KEY
 app.root_path = os.path.abspath(os.path.dirname(__file__))
-app.config.BASEDIR = config.BASEDIR
 
-if not app.debug:
-    from logging import FileHandler, Formatter
-    file_handler = FileHandler(config.LOGFILE)
-    file_handler.setLevel(logging.WARNING)
-    file_handler.setFormatter(Formatter(
-            '%(asctime)s %(levelname)s: %(message)s '
-            '[in %(pathname)s:%(lineno)d]'
-    ))
-    app.logger.addHandler(file_handler)
+app.config.APPLICATION_ROOT=config.APPLICATION_ROOT
+app.config.PREFERRED_URL_SCHEME=config.PREFERRED_URL_SCHEME
+
+# Always log
+import logging
+file_handler = logging.FileHandler(config.LOGFILE)
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(logging.Formatter(
+    '%(asctime)s %(levelname)s: %(message)s '
+    '[in %(pathname)s:%(lineno)d]'
+))
+app.logger.addHandler(file_handler)
 
 from filters import *
 app.jinja_env.filters['status_class'] = status_class
@@ -60,17 +63,8 @@ app.jinja_env.filters['approximate_time'] = approximate_time
 app.jinja_env.filters['exact_time'] = exact_time
 app.jinja_env.filters['short_date'] = short_date
 
-app.add_url_rule('/', 'views.home')
-app.add_url_rule('/<name>', 'views.bin', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'])
-
-app.add_url_rule('/docs/<name>', 'views.docs')
-app.add_url_rule('/api/v1/bins', 'api.bins', methods=['POST'])
-app.add_url_rule('/api/v1/bins/<name>', 'api.bin', methods=['GET'])
-app.add_url_rule('/api/v1/bins/<bin>/requests', 'api.requests', methods=['GET'])
-app.add_url_rule('/api/v1/bins/<bin>/requests/<name>', 'api.request', methods=['GET'])
-
-app.add_url_rule('/api/v1/stats', 'api.stats')
-
 # app.add_url_rule('/robots.txt', redirect_to=url_for('static', filename='robots.txt'))
 
 from requestbin import api, views
+app.register_blueprint(bp, url_prefix=config.APPLICATION_ROOT)
+logging.info("App prefix="+config.APPLICATION_ROOT)
