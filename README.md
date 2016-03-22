@@ -1,9 +1,17 @@
 # Dockerized RequestBin
 _Forked from a Runscope community project, [requestbin](https://github.com/Runscope/requestbin)_
 
-This fork is being customized to run in a Docker container and to run in a subdirectory rather than as root. I don't anticipate that these changes would be accepted by the main RequestBin project, so there will be no pull requests from this project unless asked. Feel free to fork this project and bring the changes you like back to RequestBin if you like.
+This fork is being customized to run in a Docker container and to run
+in a subdirectory rather than as root. I don't anticipate that these
+changes would be accepted by the main RequestBin project, so there
+will be no pull requests from this project unless asked. Feel free to
+fork this project and bring the changes you like back to RequestBin if
+you like.
 
-**TODO** I'm also going to add some "security" in the form of a required header and check for a required value for the header, and I will do some general cleanup to make this less project refer less to RequestBin (except to give credit for the code).
+**TODO** I'm also going to add some "security" in the form of a
+required header and check for a required value for the header, and I
+will do some general cleanup to make this less project refer less to
+RequestBin (except to give credit for the code).
 
 # License
 MIT
@@ -15,7 +23,7 @@ In the first version, you should run with only one worker and use the debug mode
 
     # edit requestbin/config.py to set configuration, then ... 
     docker build -t requestbin .
-    docker run --name rbin -d -e PORT=8080 -p 9999:8080
+    docker run --name rbin -d -e PORT=8080 -p 9999:8080 requestbin
     # Note rbin, 8080, and 9999 are just examples.
 
 ## Running on Heroku

@@ -4,7 +4,7 @@ REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
 # Base directory of where this application is running
-BASEDIR = '/webhooktests/'
+BASEDIR = os.environ.get('BASEDIR', '/')
 
 PORT_NUMBER = 4000
 
