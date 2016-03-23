@@ -2,14 +2,14 @@
 <html>
   <head>
     <title>{% block title %}RequestBin &mdash; Collect, inspect and debug HTTP requests and webhooks{% endblock %}</title>
-    {% block icon %}<link href="/static/img/logo.png" rel="shortcut icon" />{% endblock %}
-    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="/static/css/responsive.css" rel="stylesheet" media="screen">
-    <link href="/static/css/styles.css" rel="stylesheet" media="screen">
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet" media="screen">
-    <link type="text/css" href="/static/css/prettify.css" rel="stylesheet" />
-    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/prettify.js"></script>
+    {% block icon %}<link href="{{ url_for('static', filename='img/logo.png') }}" rel="shortcut icon" />{% endblock %}
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/responsive.css') }} " rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" media="screen">
+    <link type="text/css" href="{{ url_for('static', filename='css/prettify.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }} "></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/prettify.js') }}"></script>
     {% block head %}{% endblock %}
   </head>
   <body onload="prettyPrint()">
@@ -18,7 +18,7 @@
         <header class="row-fluid">
             <div class="span12">
               <h1 class="logo">
-                <a href="{{ url_for('.home') }}"><img src="/static/img/logo-2x.png" height="38" width="44" /></a>
+                <a href="{{ url_for('.home') }}"><img src="{{ url_for('static', filename='img/logo-2x.png') }}" height="38" width="44" /></a>
                 <a href="{{ url_for('.home') }}"><span class="logo-accent">Request</span>Bin</a>
               </h1>
                 <nav>
@@ -65,7 +65,7 @@
         <footer class="row-fluid">
             <div class="span12">
                 <div class="footer-logo">
-                    <img src="/static/img/logo-runscope-2x.png" height="34" width="34">
+                    <img src="{{ url_for('static', filename='img/logo-runscope-2x.png') }}" height="34" width="34">
                 </div>
             </div>
         </footer>

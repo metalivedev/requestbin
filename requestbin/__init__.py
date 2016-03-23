@@ -31,8 +31,8 @@ class WSGIRawBody(object):
 
 
 
-app = Flask(__name__)
-bp = Blueprint('subdir', __name__)
+app = Flask(__name__, static_url_path=config.APPLICATION_ROOT+'/static')
+bp = Blueprint(config.APPLICATION_ROOT, __name__)
 
 from werkzeug.contrib.fixers import ProxyFix
 app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
