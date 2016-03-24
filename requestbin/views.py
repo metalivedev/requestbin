@@ -1,5 +1,6 @@
 import urllib
 from flask import session, redirect, url_for, escape, request, render_template, make_response
+import jwt
 
 from requestbin import app, bp, db
 
@@ -28,7 +29,19 @@ def expand_recent_bins():
 
 @bp.route('/')
 def home():
-    return render_template('home.html', recent=expand_recent_bins())
+    try:
+        if(app.config.AUTH_COOKIE_NAME):
+            # If there is a cookie defined, then access to the index
+            # requires authentication via a signed JWT
+            authcookie = request.cookies.get(app.config.AUTH_COOKIE_NAME)
+            jwt.decode(authcookie, app.config.AUTH_SECRET)
+            
+        # If the JWT decodes, then it is valid, so we can render the index page
+        return render_template('home.html', recent=expand_recent_bins())
+    except:
+        # Failed cookie check so force user to re-auth.
+        # TODO: handle rendering exceptions separately
+        return redirect(app.config.AUTH_REDIRECT)
 
 
 @bp.route('/<name>', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'])

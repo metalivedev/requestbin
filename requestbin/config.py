@@ -5,6 +5,10 @@ REALM = os.environ.get('REALM', 'local')
 APPLICATION_ROOT = os.environ.get('APPLICATION_ROOT', '/')
 PREFERRED_URL_SCHEME = os.environ.get('APPLICATION_SCHEME', 'http')
 
+AUTH_COOKIE_NAME = os.environ.get('AUTH_COOKIE_NAME', False)
+AUTH_SECRET = os.environ.get('AUTH_SECRET', False)
+AUTH_REDIRECT = os.environ.get('AUTH_REDIRECT', False)
+
 PORT_NUMBER = 4000
 
 FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "Xr/1xfL/tpVE7jD11Mh1V8XWbg1a2tho742UwCFLHOE=")

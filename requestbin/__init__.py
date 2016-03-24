@@ -43,6 +43,9 @@ app.root_path = os.path.abspath(os.path.dirname(__file__))
 
 app.config.APPLICATION_ROOT=config.APPLICATION_ROOT
 app.config.PREFERRED_URL_SCHEME=config.PREFERRED_URL_SCHEME
+app.config.AUTH_COOKIE_NAME=config.AUTH_COOKIE_NAME
+app.config.AUTH_REDIRECT=config.AUTH_REDIRECT
+app.config.AUTH_SECRET=config.AUTH_SECRET
 
 # Always log
 import logging
